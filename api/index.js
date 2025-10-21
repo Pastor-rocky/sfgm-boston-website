@@ -1042,11 +1042,9 @@ var essaySubmissions = pgTable("essay_submissions", {
 import { Pool } from "pg";
 import { drizzle } from "drizzle-orm/node-postgres";
 if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?"
-  );
+  console.warn("DATABASE_URL not set. Database functionality will be limited.");
 }
-var pool = new Pool({
+var pool = process.env.DATABASE_URL ? new Pool({
   connectionString: process.env.DATABASE_URL,
   max: 5,
   // Limit concurrent connections
@@ -1054,11 +1052,13 @@ var pool = new Pool({
   // 30 seconds
   connectionTimeoutMillis: 1e4
   // 10 seconds
-});
-pool.on("error", (err) => {
-  console.error("Database pool error:", err);
-});
-var db = drizzle({ client: pool, schema: schema_exports });
+}) : null;
+if (pool) {
+  pool.on("error", (err) => {
+    console.error("Database pool error:", err);
+  });
+}
+var db = pool ? drizzle({ client: pool, schema: schema_exports }) : null;
 
 // server/storage.ts
 import { eq, and, or, desc, asc, count, lt, gte, sql, ilike, isNotNull, inArray } from "drizzle-orm";
@@ -4728,7 +4728,7 @@ function setupRoutes(app2) {
         console.log("Validation failed - missing fields:", { username: !!username, password: !!password });
         return res.status(400).json({ message: "Username and password are required" });
       }
-      if (!process.env.DATABASE_URL) {
+      if (!db) {
         console.log("Database not configured - DATABASE_URL missing");
         return res.status(500).json({ message: "Database not configured. Please set DATABASE_URL environment variable." });
       }
@@ -5416,7 +5416,7 @@ async function setupVite(app2, server) {
   });
 }
 function serveStatic(app2) {
-  const distPath = path3.resolve(import.meta.dirname, "public");
+  const distPath = path3.resolve(import.meta.dirname, "..", "dist", "public");
   if (!fs2.existsSync(distPath)) {
     throw new Error(
       `Could not find the build directory: ${distPath}, make sure to build the client first`
