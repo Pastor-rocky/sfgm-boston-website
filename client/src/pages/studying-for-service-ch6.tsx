@@ -1,0 +1,783 @@
+import React, { useState, useRef, useEffect } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Slider } from '@/components/ui/slider';
+import { Play, Pause, SkipBack, SkipForward, Volume2 } from 'lucide-react';
+
+export default function StudyingForServiceCh6() {
+  const audioRef = useRef<HTMLAudioElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [volume, setVolume] = useState(1);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.volume = volume;
+    }
+  }, [volume]);
+
+  const togglePlayPause = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (isPlaying) {
+      audio.pause();
+    } else {
+      audio.play();
+    }
+    setIsPlaying(!isPlaying);
+  };
+
+  const handleSkip = (seconds: number) => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = Math.max(0, Math.min(audio.currentTime + seconds, duration));
+  };
+
+  const formatTime = (time: number) => {
+    if (isNaN(time)) return '0:00';
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-900 via-indigo-900 to-purple-900 p-8">
+      <div className="max-w-4xl mx-auto">
+        {/* Audio Player Card */}
+        <Card className="mb-8 bg-gradient-to-r from-blue-600 to-indigo-600 border-none shadow-2xl">
+          <CardContent className="p-6">
+            {/* Cover and Title */}
+            <div className="flex items-start gap-4 mb-6">
+              <img 
+                src="/studying-for-service-cover-new.jpg" 
+                alt="Studying for Service" 
+                className="w-24 h-auto rounded shadow-lg"
+              />
+              <div className="flex-1">
+                <h3 className="text-white text-2xl font-bold mb-1">
+                  <span className="text-3xl align-text-top mr-1">📚</span>
+                  <span className="align-middle">Studying for Service</span>
+                </h3>
+                <p className="text-white/90 text-xl font-semibold">
+                  <span className="align-middle">Chapter 6: Stories That Bring Glory</span>
+                  <span className="text-2xl align-text-top ml-1">📖</span>
+                </p>
+              </div>
+            </div>
+
+            {/* Playback Controls */}
+            <div className="space-y-4">
+              {/* Main Controls */}
+              <div className="flex items-center justify-center gap-4">
+                <Button
+                  onClick={() => handleSkip(-15)}
+                  size="sm"
+                  variant="ghost"
+                  className="text-white hover:bg-white/20"
+                >
+                  <SkipBack className="h-5 w-5" />
+                  <span className="ml-1 text-xs">15</span>
+                </Button>
+                
+                <Button
+                  onClick={togglePlayPause}
+                  size="lg"
+                  className="bg-white text-blue-600 hover:bg-blue-50 rounded-full h-14 w-14"
+                >
+                  {isPlaying ? (
+                    <Pause className="h-6 w-6" />
+                  ) : (
+                    <Play className="h-6 w-6 ml-1" />
+                  )}
+                </Button>
+                
+                <Button
+                  onClick={() => handleSkip(15)}
+                  size="sm"
+                  variant="ghost"
+                  className="text-white hover:bg-white/20"
+                >
+                  <span className="mr-1 text-xs">15</span>
+                  <SkipForward className="h-5 w-5" />
+                </Button>
+              </div>
+
+              {/* Progress Bar */}
+              <div className="space-y-2">
+                <Slider
+                  value={[currentTime]}
+                  max={duration || 100}
+                  step={1}
+                  onValueChange={([value]) => {
+                    if (audioRef.current) {
+                      audioRef.current.currentTime = value;
+                      setCurrentTime(value);
+                    }
+                  }}
+                  className="cursor-pointer"
+                />
+                <div className="flex justify-between text-white/90 text-sm">
+                  <span>{formatTime(currentTime)}</span>
+                  <span>{formatTime(duration)}</span>
+                </div>
+              </div>
+
+              {/* Volume Control */}
+              <div className="flex items-center gap-3 justify-center">
+                <Volume2 className="h-4 w-4 text-white" />
+                <Slider
+                  value={[volume * 100]}
+                  max={100}
+                  step={1}
+                  onValueChange={([value]) => setVolume(value / 100)}
+                  className="w-24"
+                />
+              </div>
+            </div>
+
+            <audio
+              ref={audioRef}
+              src="/studying-for-service-ch6.mp3"
+              onTimeUpdate={(e) => setCurrentTime(e.currentTarget.currentTime)}
+              onLoadedMetadata={(e) => setDuration(e.currentTarget.duration)}
+              onPlay={() => setIsPlaying(true)}
+              onPause={() => setIsPlaying(false)}
+              onEnded={() => setIsPlaying(false)}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Content Card */}
+        <Card className="bg-white shadow-xl mb-8">
+          <CardContent className="p-8 prose max-w-none">
+            <h2 className="text-3xl font-bold text-blue-900 mb-6">
+              📖 CHAPTER 6: STORIES THAT BRING GLORY
+            </h2>
+
+            <blockquote className="border-l-4 border-blue-500 pl-4 italic text-gray-800 my-6 bg-blue-50 p-4 rounded">
+              <p className="font-semibold text-blue-900">"All these things Jesus spoke to the multitude in parables; and without a parable He did not speak to them."</p>
+              <p className="text-sm mt-2 text-blue-700">— Matthew 13:34</p>
+            </blockquote>
+
+            <div className="bg-purple-50 border-l-4 border-purple-500 p-4 my-6 rounded">
+              <p className="font-bold text-purple-900 mb-2">💡 WHAT IS A PARABLE?</p>
+              <p className="text-gray-800">
+                One of the definitions for the word parable is: <strong>an earthly story with a heavenly meaning</strong>.
+              </p>
+            </div>
+
+            <p className="mb-4">
+              One minister said it like this: "the people need commercial breaks." What he meant was when people are listening to a sermon, after a while they tend to drift off, so a good story usually gets people listening again and back on track. It could even be stories of what happened to you that week, as long as it connects to the sermon.
+            </p>
+
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 my-6 rounded">
+              <p className="font-bold text-yellow-900 mb-2">✨ STORYTELLING TIP</p>
+              <p className="text-gray-800">
+                I at least try to tell <strong>two stories</strong> in a sermon, usually in the middle and at the end right before I call an altar call. Sometimes I even tell a story at the start to get the people excited to what they are about to hear preached.
+              </p>
+            </div>
+
+            <p className="mb-4">
+              If Jesus told earthly stories to connect heavenly meanings with the Scriptures everywhere He went, I believe we should do the same. Jesus was a storyteller that told stories that brought God glory. So in this chapter I want to talk about the importance of a good story to connect it with what you are preaching so that people will fully understand from ages 7–70. Remember, whether it be personal stories, someone else's story, or made up stories, everyone always remembers a good story.
+            </p>
+
+            <p className="mb-4">
+              In this chapter I'm going to present some stories I told in some of my sermons. I'm going to tell you the subject I preached on and then show you a good story to connect the Biblical truth to a teaching. Then you'll get the full idea of how it works. One thing you don't want is a story that sounds good, but has nothing to do with the subject of what you're teaching.
+            </p>
+
+            <p className="mb-6">
+              Some of these stories are kind of long for people to remember but what I do is I read it a few times and then tell my version of the story. Keep that in mind when you read a story. It's not about changing the story it's about telling a long story short.
+            </p>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              Let's say you were teaching on faith or faith in action and how you should have both of these characteristics in your walk with God because you truly can't have one without the other. The book of James says, "faith without actions is dead." You can tell the following story:
+            </p>
+
+            <h3 className="text-2xl font-bold text-green-900 mt-8 mb-4">
+              ⚓ STORY 1: FAITH AND WORKS - THE FERRYMAN
+            </h3>
+
+            <p className="mb-4">
+              A man who had operated a ferryboat for many years was a man of much thought and observation, but was a man of few words. He was also a student of the Bible and believed in the truths of the Scriptures. Two of the regular passengers on the ferryboat were businessmen who cross together on the same day once a week. Frequently the subject of their conversation was faith and works. One of these men believed that it was sufficient to do without works if he had faith while the other thought it was sufficient to do without faith if he had works.
+            </p>
+
+            <p className="mb-4">
+              The ferryman's patience had been tried by this fruitless arguing about faith and works. What he heard describing faith and works was not in harmony with the Scriptures so that he finally felt he must intervene. He decided upon a plan.
+            </p>
+
+            <p className="mb-4">
+              On one oar he painted "Faith" and on the other "Works". Then on the next trip with these men, when he came to the most dangerous part of the crossing he took in the oar marked "Faith" and used "Works" with all his might. The ferryboat went around in circles to the fear and annoyance of these two passengers. "Put out the other oar," one yelled in an angry voice.
+            </p>
+
+            <p className="mb-4">
+              "Very well," was the calm reply of the old man. He took in "Works" and put out "Faith". He used all his might on "Faith" and the boat continued to go round and round. The two men thought he must be out of his mind, but he continued his practical demonstration for a little while. Then he called attention to the names painted on the oars. "I have tried your way," he said to one man, "and yours," to the other, "and you have seen the result. Now observe my way." He gave a steady pull to each oar of the boat and in a few minutes they safely arrived at their landing.
+            </p>
+
+            <p className="mb-6">
+              Basically the moral of that story is when you try one without the other you will go in circles but when you put them together you will go forward in your Christian walk.
+            </p>
+
+            <div className="bg-green-50 border-l-4 border-green-500 p-5 my-6 rounded">
+              <p className="font-bold text-green-900 mb-3">🚣 The Ferryman's Lesson</p>
+              <p className="text-gray-800 mb-3 text-sm leading-relaxed">
+                A man who operated a ferryboat for many years had painted "Faith" on one oar and "Works" on the other. Two businessmen regularly argued about faith versus works. One believed faith alone was sufficient, the other believed works alone were enough.
+              </p>
+              <p className="text-gray-800 mb-3 text-sm leading-relaxed">
+                At the most dangerous part of the crossing, the ferryman took in the "Faith" oar and used only "Works" with all his might. The boat went in circles! The passengers yelled, "Put out the other oar!" He took in "Works" and put out "Faith"—the boat continued in circles!
+              </p>
+              <p className="text-gray-800 font-semibold text-sm leading-relaxed">
+                Then he gave a steady pull to BOTH oars and they safely arrived at their landing. When you try one without the other you will go in circles, but when you put them together you will go forward in your Christian walk!
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              I told the following story when I was teaching about religion verse relationship and how Christianity is not working for most of the "so-called Christians" because they are not applying the Word of Christ to their lives.
+            </p>
+
+            <h3 className="text-2xl font-bold text-red-900 mt-8 mb-4">
+              🧼 STORY 2: RELIGION VS RELATIONSHIP - THE RABBI & SOAP MAKER
+            </h3>
+
+            <p className="mb-6">
+              "A rabbi and a soap maker went for a walk together. The soap maker said, 'What good is religion? Look at all the trouble and misery of the world! Still there, even after years—thousands of years—of teaching about goodness and truth and peace. Still there, after all the prayers and sermons and teachings. If religion is good and true, why should this be?' The rabbi said nothing. They continued walking until he noticed a child playing in the gutter. Then the rabbi said, 'Look at that child. You say that soap makes people clean, but see the dirt on that youngster. What good is soap? With all the soap in the world, over all these years, the child is still filthy. I wonder how effective soap is, after all!' The soap maker protested. 'But, Rabbi, soap cannot do any good unless it is applied.' 'As is religion!' the rabbi said."
+            </p>
+
+            <div className="bg-red-50 border-l-4 border-red-500 p-5 my-6 rounded">
+              <p className="font-bold text-red-900 mb-3">💬 The Soap Maker's Challenge</p>
+              <p className="text-gray-800 mb-3 text-sm leading-relaxed">
+                A soap maker said to a rabbi: "What good is religion? Look at all the trouble and misery of the world after thousands of years of teaching about goodness and truth!"
+              </p>
+              <p className="text-gray-800 mb-3 text-sm leading-relaxed">
+                They walked until the rabbi noticed a dirty child in the gutter. The rabbi said, "Look at that child. You say soap makes people clean, but see the dirt! What good is soap? With all the soap in the world, the child is still filthy. I wonder how effective soap is!"
+              </p>
+              <p className="text-gray-800 mb-3 text-sm leading-relaxed">
+                The soap maker protested: "But Rabbi, soap cannot do any good unless it is applied!"
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                The rabbi replied: <strong>"As is religion!"</strong>
+              </p>
+            </div>
+
+            <p className="mb-4 font-semibold text-gray-800">
+              Use this story to explain that Christianity is not working for most "so-called Christians" because they are not applying the Word of Christ to their lives.
+            </p>
+
+            {/* Due to length, I'll continue with more stories in a structured format */}
+            
+            <p className="mb-6 font-semibold text-gray-800">
+              The next story is one that brought me to tears. You can use the following story to explain the miracles that Jesus still does today and forever. You can also tell this story to explain the gift of salvation or both. I told this story talking about the woman that was bound thirty-eight years (Luke 13). I also told the story in reference to the miracle of wine (John 2), and the woman with the issue of blood (Mark 8).
+            </p>
+
+            <h3 className="text-2xl font-bold text-purple-900 mt-8 mb-4">
+              💰 STORY 3: HOW MUCH IS A MIRACLE?
+            </h3>
+
+            <p className="mb-4">
+              A little girl went to her bedroom and pulled a glass jelly jar from its hiding place in the closet. She poured the change out on the floor and counted it carefully. Three times, even. The total had to be exactly perfect. No chance here for mistakes. Carefully placing the coins back in the jar and twisting on the cap, she slipped out the back door and made her way six blocks to Rexall's Drug Store with the big red Indian Chief sign above the door.
+            </p>
+
+            <p className="mb-4">
+              She waited patiently for the pharmacist to give her some attention, but he was too busy at this moment. Tess twisted her feet to make a scuffing noise. Nothing. She cleared her throat with the most disgusting sound she could muster. No good. Finally she took a quarter from her jar and banged it on the glass counter. That did it!
+            </p>
+
+            <p className="mb-4">
+              'And what do you want?' the pharmacist asked in an annoyed tone of voice. 'I'm talking to my brother from Chicago whom I haven't seen in ages,' he said without waiting for a reply to his question.
+            </p>
+
+            <p className="mb-4">
+              'Well, I want to talk to you about my brother,' Tess answered back in the same annoyed tone. 'He's really, really sick... and I want to buy a miracle.' 'I beg your pardon?' said the pharmacist. 'His name is Andrew and he has something bad growing inside his head and my Daddy says only a miracle can save him now. So how much does a miracle cost?' 'We don't sell miracles here, little girl. I'm sorry but I can't help you,' the pharmacist said, softening a little. 'Listen, I have the money to pay for it. If it isn't enough, I will get the rest. Just tell me how much it costs.'
+            </p>
+
+            <p className="mb-4">
+              The pharmacist's brother was a well-dressed man. He stooped down and asked the little girl, 'What kind of a miracle does your brother need?' 'I don't know,' Tess replied with her eyes welling up. 'I just know he's really sick and Mommy says he needs an operation. But my Daddy can't pay for it, so I want to use my money.' 'How much do you have?' asked the man from Chicago. 'One dollar and eleven cents,' Tess answered barely audible. 'And it's all the money I have, but I can get some more if I need to.' 'Well, what a coincidence,' smiled the man. 'A dollar and eleven cents—the exact price of a miracle for little brothers.' He took her money in one hand and with the other hand he grasped her mitten and said 'Take me to where you live. I want to see your brother and meet your parents. Let's see if I have the miracle you need.'
+            </p>
+
+            <p className="mb-6">
+              That well-dressed man was Dr. Carlton Armstrong, a surgeon, specializing in neurosurgery. The operation was completed free of charge and it wasn't long until Andrew was home again and doing well. Mom and Dad were happily talking about the chain of events that had led them to this place. 'That surgery,' her Mom whispered, 'was a real miracle... I wonder how much it would have cost?' Tess smiled. She knew exactly how much a miracle cost... one dollar and eleven cents... plus the faith of a little child. (Author Unknown)
+            </p>
+
+            <div className="bg-purple-50 border-l-4 border-purple-500 p-5 my-6 rounded">
+              <p className="font-bold text-purple-900 mb-3">👧 The Little Girl's Faith</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A little girl saved $1.11 in a jar. Her brother Andrew was dying with something growing in his head. She went to the pharmacy asking to buy a miracle.
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                The pharmacist said, "We don't sell miracles here, little girl." But his brother, Dr. Carlton Armstrong (a neurosurgeon), asked, "What kind of miracle does your brother need?"
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                "How much do you have?" he asked. "One dollar and eleven cents," Tess answered. "Well, what a coincidence," smiled the man. "A dollar and eleven cents—the exact price of a miracle for little brothers."
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                The operation was completed free of charge. Tess knew exactly how much a miracle cost... one dollar and eleven cents... plus the faith of a little child.
+              </p>
+            </div>
+
+            <p className="mb-4 text-gray-700 italic text-sm">
+              <strong>Use for:</strong> Miracles Jesus still does, gift of salvation, woman bound 38 years (Luke 13), miracle of wine (John 2), woman with issue of blood (Mark 8).
+            </p>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              The following two stories are about reading the Bible and the importance of it.
+            </p>
+
+            <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+              📚 STORY 4: THE COAL BASKET - READING THE BIBLE
+            </h3>
+
+            <p className="mb-4">
+              The story is told of an old man who lived on a farm in the mountains of eastern Kentucky with his young grandson. Each morning, Grandpa was up early sitting at the kitchen table reading from his old worn-out Bible. His grandson who wanted to be just like him tried to imitate him in any way he could. One day the grandson asked, "Papa, I try to read the Bible just like you but I don't understand it, and what I do understand I forget as soon as I close the book. What good does reading the Bible do?"
+            </p>
+
+            <p className="mb-4">
+              The Grandfather quietly turned from putting coal in the stove and said, "Take this coal basket down to the river and bring back a basket of water." The boy did as he was told, even though all the water leaked out before he could get back to the house. The grandfather laughed and said, "You will have to move a little faster next time," and sent him back to the river with the basket to try again. This time the boy ran faster, but again the basket was empty before he returned home. Out of breath, he told his grandfather that it was "impossible to carry water in a basket," and he went to get a bucket instead. The old man said, "I don't want a bucket of water; I want a basket of water. You can do this. You're just not trying hard enough," and he went out the door to watch the boy try again.
+            </p>
+
+            <p className="mb-6">
+              At this point, the boy knew it was impossible, but he wanted to show his grandfather that even if he ran as fast as he could, the water would leak out before he got far at all. The boy scooped the water and ran hard, but when he reached his grandfather the basket was again empty. Out of breath, he said, "See Papa, it's useless!" "So you think it is useless?" The old man said, "Look at the basket." The boy looked at the basket and for the first time he realized that the basket looked different. Instead of a dirty old coal basket, it was clean. "Son, that's what happens when you read the Bible. You might not understand or remember everything, but when you read it, it will change you from the inside out. That is the work of God in our lives. To change us from the inside out and to slowly transform us into the image of His Son. Take time to read a portion of God's word each day. Pray that He will use it to turn your heart and mind to Him. 'How can a young man cleanse his way? By taking heed according to Your word' (Psalm 119:9). 'That He might sanctify and cleanse her with the washing of water by the word' (Ephesians 5:25–27)." Read no matter what—God will do the rest.
+            </p>
+
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded">
+              <p className="font-bold text-blue-900 mb-3">🧺 Grandpa's Wisdom</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A grandson asked his grandpa, "I try to read the Bible just like you but I don't understand it, and what I do understand I forget as soon as I close the book. What good does reading the Bible do?"
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                The grandfather said, "Take this coal basket to the river and bring back water." The boy tried multiple times but the water always leaked out. Finally exhausted, he said, "It's impossible!"
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                The old man said, "Look at the basket." The boy realized—instead of a dirty old coal basket, it was CLEAN!
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                "Son, that's what happens when you read the Bible. You might not understand or remember everything, but when you read it, it will change you from the inside out."
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              There's another story I love to tell about how we miss everything God wants to give us because we don't allow Him to speak to us when we don't open His Word.
+            </p>
+
+            <h3 className="text-2xl font-bold text-orange-900 mt-8 mb-4">
+              🎓 STORY 5: THE SPORTS CAR - MISSING GOD'S BLESSINGS
+            </h3>
+
+            <p className="mb-4">
+              A young man was getting ready to graduate from college. For many months he had admired a beautiful sports car in a dealer's showroom, and knowing his father could well afford it, he told him that was all he wanted. As graduation day approached, the young man awaited signs that his father had purchased the car. Finally, on the morning of his graduation, his father called him into his private study. His father told him how proud he was to have such a fine son, and told him how much he loved him. He handed his son a beautifully wrapped gift box. Curious, and somewhat disappointed, the young man opened the box and found a lovely, leather-bound Bible, with the young man's name embossed in gold. Angry, he raised his voice to his father and said, "With all your money, you give me a Bible?" and stormed out of the house.
+            </p>
+
+            <p className="mb-6">
+              Many years passed and the young man was very successful in business. He had a beautiful home and wonderful family, but realized his father was very old, and thought perhaps he should go to him. He had not seen him since that graduation day. Before he could make arrangements, he received a telegram telling him his father had passed away, and willed all of his possessions to his son. He needed to come home immediately and take care of things. When he arrived at his father's house, sudden sadness and regret filled his heart. He began to search through his father's important papers and saw the still gift-wrapped Bible, just as he had left it years ago. With tears, he opened the Bible and began to turn the pages. His father had carefully underlined a verse, Matthew 7:11, "And if ye, being evil, know how to give good gifts to your children, how much more shall your Heavenly Father which is in Heaven, give to those who ask Him?" As he read those words, a car key dropped from the back of the Bible. It had a tag with the dealer's name, the same dealer who had the sports car he had desired. On the tag was the date of his graduation, and the words PAID IN FULL.
+            </p>
+
+            <p className="mb-6">
+              How many times do we miss God's blessings because we can't see past our own desires? Allow God, your Father, to speak to you because He has a way better plan for you! (Jeremiah 29:11)
+            </p>
+
+            <div className="bg-orange-50 border-l-4 border-orange-500 p-5 my-6 rounded">
+              <p className="font-bold text-orange-900 mb-3">🚗 The Graduation Gift</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A young man wanted a sports car for graduation. His father gave him a leather-bound Bible instead. Angry, he said, "With all your money, you give me a Bible?" and stormed out.
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                Years later, the father died. The son found the still-wrapped Bible. Opening it with tears, he found Matthew 7:11 underlined. A car key dropped from the Bible—the sports car key, dated his graduation day, with the words: <strong>PAID IN FULL</strong>.
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                How many times do we miss God's blessings because we can't see past our own desires? (Jeremiah 29:11)
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              These next two stories show the love of God and what He did for us, stories that can be told to explain that love and the price He paid for us. They can also be told to explain how we should not take that love for granted.
+            </p>
+
+            <h3 className="text-2xl font-bold text-red-900 mt-8 mb-4">
+              ❤️ STORY 6: GOD'S LOVE - THE FATHER'S SACRIFICE
+            </h3>
+
+            <p className="mb-4 font-semibold text-red-800">
+              God's Love.
+            </p>
+
+            <p className="mb-4">
+              After a few of the usual Sunday evening hymns, the church's pastor slowly stood up, walked over to the pulpit and, before he gave his sermon for the evening, briefly introduced a guest minister who was in the service that evening. In the introduction, the pastor told the congregation that the guest minister was one of his dearest childhood friends and that he wanted him to have a few moments to greet the church and share whatever he felt would be appropriate for the service. With that, an elderly man stepped up to the pulpit and began to speak:
+            </p>
+
+            <p className="mb-4">
+              "A father, his son, and a friend of his son were sailing off the Pacific Coast when a fast approaching storm blocked any attempt to get back to shore. The waves were so high, that even though the father was an experienced sailor, he could not keep the boat upright, and the three were swept into the ocean as the boat capsized."
+            </p>
+
+            <p className="mb-4">
+              The old man hesitated for a moment, making eye contact with two teenagers who were, for the first time since the service began, looking somewhat interested in his story. The aged minister continued with his story, "Grabbing a rescue line, the father had to make the most excruciating decision of his life ... to which boy he would throw the other end of the life line. He only had seconds to make the decision. The father knew that his son was a Christian and he also knew that his son's friend was not. The agony of his decision could not be matched by the torrent of waves. As the father yelled out, 'I love you, son!' he threw out the life line to his son's friend. By the time the father had pulled the friend back to the capsized boat, his son had disappeared beneath the raging swells into the black of night. His body was never recovered."
+            </p>
+
+            <p className="mb-4">
+              By this time, the two teenagers were sitting up straight in the pew, anxiously waiting for the next words to come out of the old minister's mouth. "The father," he continued, "knew his son would step into eternity with Jesus, and he could not bear the thought of his son's friend stepping into an eternity without Jesus. Therefore, he sacrificed his son to save his son's friend. How great is the love of God that He should do the same for us. Our heavenly Father sacrificed His only begotten Son that we could be saved. I urge you to accept His offer to rescue you and take ahold of the life line He is throwing out to you in this service."
+            </p>
+
+            <p className="mb-6">
+              With that, the old man turned and sat back down in his chair as silence filled the room. The pastor again walked slowly to the pulpit and delivered a brief sermon with an invitation at the end. However, no one responded to the appeal.
+Within minutes after the service ended, the two teenagers were at the old man's side. "That was a nice story," politely stated one of the boys, "but I don't think it was very realistic for a father to give up his only son's life in hopes that the other boy would become a Christian." "Well, you've got a point there," the old man replied, glancing down at his worn Bible. A big smile broadened his narrow face, and he once again looked up at the boys and said, "It sure isn't very realistic, is it? But I'm standing here today to tell you that THAT story gives me a glimpse of what it must have been like for God to give up His Son for me. You see ... I was that father and your pastor is my son's friend."
+            </p>
+
+            <div className="bg-red-50 border-l-4 border-red-500 p-5 my-6 rounded">
+              <p className="font-bold text-red-900 mb-3">⛵ The Storm at Sea</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A father, his son, and his son's friend were sailing when a storm swept them into the ocean. The father grabbed a rescue line and had seconds to decide—to which boy would he throw the life line?
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                The father knew his son was a Christian and his friend was not. As he yelled "I love you, son!" he threw the line to his son's friend. By the time he pulled the friend back, his son had disappeared beneath the waves. His body was never recovered.
+              </p>
+              <p className="text-gray-800 mb-3 text-sm leading-relaxed">
+                The old minister concluded: "The father knew his son would step into eternity with Jesus, and he could not bear the thought of his son's friend stepping into an eternity without Jesus. Therefore, he sacrificed his son to save his son's friend."
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                At the end, the minister revealed: "I'm standing here today to tell you that story gives me a glimpse of what it must have been like for God to give up His Son for me. You see... I was that father and your pastor is my son's friend."
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              Here's another story similar.
+            </p>
+
+            <h3 className="text-2xl font-bold text-purple-900 mt-8 mb-4">
+              🌉 STORY 7: THE DRAWBRIDGE - GOD'S SACRIFICE
+            </h3>
+
+            <p className="mb-4">
+              In past times when a drawbridge keeper was needed to act as a 'switchman' for trains that crossed above large rivers, one truly awful incident stands out. Most of the time, bridges were kept in a position to let ships pass freely in the water but at certain times of day, trains also had to travel and cross the river, using the drawbridge. The switchman's job was to make sure to extend the bridge for the train at certain times, then get the drawbridge back out of the way again so that water vehicles could travel as normal.
+            </p>
+
+            <p className="mb-4">
+              One day, a switchman noted the approach of the train and began to operate the appropriate controls to lock the drawbridge into place. He watched the train headlights get closer, and double-checked the drawbridge, only to notice that the locking mechanisms weren't actually locking like they should! If these were not locked properly when the train began to cross the river, it would jump the track and crash far down below, into the river. He noted that, according to his schedule, the particular train in question happened to be a passenger train, and this further heightened his dilemma.
+            </p>
+
+            <p className="mb-4">
+              Luckily, the drawbridge keeper had been trained for emergency situations, so he knew he could simply dash from the control room and to a control box nearby, to hold a specific lever into place and lock the drawbridge manually. He'd noticed the flawed lock in time, so he dashed outside to manually lock the drawbridge, relieved that he'd been taught this safety tactic. With the lever held firm, the train neared and the rumbling of engine and wheels on the track grew, and the switchman knew he should brace himself soon for the train.
+            </p>
+
+            <p className="mb-4">
+              Just then, he heard a sound which made his blood run cold! "Daddy...Daddy where are you?" It was his 5 year old son, crossing part of the tracks to come find him. "Run, son—RUN!!!" the father shouted. But the train was fast approaching and the father's words were caught up in the thunder of the train's noise. He released the lever for a moment, in order to run and grab his son—but realized that the train was approaching with much greater speed than he had anticipated. He'd never be fast enough to run to grab his son, then make it back in time to hold the drawbridge lever in place again before the train reached the river crossing! If he didn't hold the lever, all the passengers on the oncoming train would crash into the river, most likely, all would die from a plunge of that distance overhead to the river below.
+            </p>
+
+            <p className="mb-6">
+              With an agonizing cry, he grasped the lever as the train sped forward. Nobody aboard the train ever noticed the tiny, broken body flung violently and mercilessly into the river by the train. Nobody ever heard the dreaded splash of the young body plunging into the river. Nobody was ever aware of the sobbing man, still hanging on to the lever long minutes after the train was gone and out of sight. Nobody saw the man as he walked home, more slowly and dejectedly than ever before, to tell his wife how their son died.
+            </p>
+
+            <p className="mb-6 text-center font-semibold text-purple-800 text-lg">
+              If you can comprehend, at all, this man's loss and heart, maybe you can begin to understand the feelings of Our Father in Heaven when he sacrificed His only Son in order to bridge the gap between us and eternal life.
+            </p>
+
+            <div className="bg-purple-50 border-l-4 border-purple-500 p-5 my-6 rounded">
+              <p className="font-bold text-purple-900 mb-3">🚂 The Switchman's Choice</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A drawbridge keeper noticed the train approaching but the locking mechanism failed! He dashed to manually lock it. Just then he heard: "Daddy...Daddy where are you?" His 5-year-old son was crossing the tracks!
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                "Run, son—RUN!!!" he shouted. But the train noise drowned his words. He calculated: if he released the lever to save his son, the passenger train would crash into the river and everyone would die. If he stayed, his son would die.
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                With an agonizing cry, he grasped the lever as the train sped forward. Nobody aboard noticed the tiny broken body. Nobody heard the splash. Nobody saw the sobbing man, still hanging on to the lever long after the train was gone.
+              </p>
+            </div>
+
+            <p className="mb-4 text-center font-semibold text-red-800 text-lg">
+              If you can comprehend this man's loss, maybe you can begin to understand the feelings of Our Father in Heaven when He sacrificed His only Son to bridge the gap between us and eternal life.
+            </p>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              I tell the following story when I'm at a funeral preaching a sermon or if I'm talking about how Jesus destroyed death, hell, and the grave. You can also use it with the story of the raising of Lazarus in John chapter eleven.
+            </p>
+
+            <h3 className="text-2xl font-bold text-teal-900 mt-8 mb-4">
+              🐝 STORY 8: THE STING OF DEATH
+            </h3>
+
+            <p className="mb-4 font-semibold text-teal-800">
+              About the Sting of Death
+            </p>
+
+            <p className="mb-4">
+              A vacationing family is driving along in their car, windows rolled down, enjoying the warm summer breeze of the sunny day. All of a sudden a big black bee darts in the window and starts buzzing around inside the car. A little girl, highly allergic to bee stings, cringes in the back seat. If she is stung, she could die within an hour (or sooner). "Oh, Daddy," she squeals in terror, "it's a bee! It's going to sting me!"
+            </p>
+
+            <p className="mb-4">
+              The father pulls the car over to a stop, and reaches back to try to catch the bee. Buzzing towards him, the bee bumps against the front windshield where the father traps it in his fist. Holding it in his closed hand, the father waits for the inevitable sting. The bee stings the father's hand and in pain, the father lets go of the bee.
+            </p>
+
+            <p className="mb-6">
+              The bee is loose in the car again. The little girl again panics, "Daddy, it's going to sting me!" The father gently says, "No honey, he's not going to sting you now. Look at my hand." The bee's stinger is in my hand!
+            </p>
+
+            <p className="mb-4">
+              "Where, O death, is your victory? Where, O death, is your sting?" (1 Corinthians 15:55)
+            </p>
+
+            <p className="mb-6">
+              Jesus says to us, "Look at my hands." He has Satan's sting, the sting of death, the sting of sin, the sting of deceit, the sting of feeling worthless. Jesus has all of those stingers in His hands. When you see that nail-scarred hand, realize that, on your behalf, Jesus took all the pain that Satan could throw at Him. He reduced Satan to a big black bee that has lost its stinger—all Satan can do is buzz around. Because we have the power his power has been stripped and he has been made a public mockery. "Having disarmed principalities and powers, He made a public spectacle of them, triumphing over them in it" (Colossians 2:15). That's the victory that Jesus won for you! [Author Unknown — from Bill Champion]
+            </p>
+
+            <div className="bg-teal-50 border-l-4 border-teal-500 p-5 my-6 rounded">
+              <p className="font-bold text-teal-900 mb-3">🚗 The Bee in the Car</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A family was driving when a bee flew in. A little girl, highly allergic to bee stings, panicked: "Daddy, it's going to sting me! I'll die!"
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                The father trapped the bee in his fist and let it sting his hand. In pain, he released it. The girl panicked again: "Daddy, it's going to sting me!"
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                The father gently said, "No honey, he's not going to sting you now. Look at my hand—the stinger is in MY hand!"
+              </p>
+            </div>
+
+            <blockquote className="border-l-4 border-green-500 pl-4 italic text-gray-800 my-6 bg-green-50 p-4 rounded">
+              <p className="font-semibold text-green-900">"Where, O death, is your victory? Where, O death, is your sting?"</p>
+              <p className="text-sm mt-2 text-green-700">— 1 Corinthians 15:55</p>
+            </blockquote>
+
+            <p className="mb-4 text-gray-800">
+              Jesus says to us, "Look at my hands." He has Satan's sting, the sting of death, sin, deceit, and worthlessness. Jesus took all the pain. He reduced Satan to a big black bee that has lost its stinger—all Satan can do is buzz around!
+            </p>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              The Bible talks about a bond servant as being a servant that doesn't need to stay and serve but loves his master and loves the way they are treated by their master; they willingly stay and be willing servants. A lot of the apostles refer to themselves as bond slaves in their opening letters in the Bible.
+            </p>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              The following story is about letting go of bitterness and unforgiveness—or any sin that's in our life—so that people can truly see Jesus in our lives. A good Scripture to connect it with is: "For we are God's masterpiece. He has created us anew in Christ Jesus, so we can do the good things he planned for us long ago" (Ephesians 2:10 NLT).
+            </p>
+
+            <h3 className="text-2xl font-bold text-blue-900 mt-8 mb-4">
+              🎨 STORY 9: LEONARDO DA VINCI - FORGIVENESS
+            </h3>
+
+            <p className="mb-4">
+              Just before Leonardo da Vinci began to work on his famous painting "The Last Supper," he had a bitter argument with a fellow painter. He grew so enraged that he decided to paint the face of his former friend into the face of Judas. Leonardo knew that if he painted his friend as Judas, succeeding generations would look upon the friend with scorn. The face of Judas was the first he completed, and all who saw it knew it was the face of the fellow painter.
+            </p>
+
+            <p className="mb-6">
+              When Leonardo began to paint the face of Jesus, however, something seemed to hold him back, in spite of his best efforts. Over and over again he tried to paint Christ, only to be frustrated. Finally, he came to the conclusion that his frustration had to do with the fact that he had painted his friend's face into the face of Judas. So Leonardo painted out the face of Judas and began again to paint the face of Jesus—this time with success.
+            </p>
+
+            <p className="mb-6">
+              We can't paint the features and attributes of Jesus into our own lives if we are painting bitterness, hate, greed, and every other sin in our lives.
+            </p>
+
+            <div className="bg-blue-50 border-l-4 border-blue-500 p-5 my-6 rounded">
+              <p className="font-bold text-blue-900 mb-3">🖼️ The Last Supper</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                Before painting "The Last Supper," Leonardo had a bitter argument with a fellow painter. Enraged, he painted his friend's face as Judas—so generations would scorn him.
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                But when he tried to paint Jesus' face, he was frustrated and couldn't do it. Finally, he realized his bitterness was blocking him. He painted out Judas' face (his friend) and started over.
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                This time he successfully painted Jesus! We can't paint the features of Jesus into our lives if we are painting bitterness, hate, and greed.
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              The following story is one I share when I'm witnessing to people. I use this story in reference to Matthew 6:33 that says, "But seek first the kingdom of God and His righteousness, and all these things shall be added to you." People are too caught up with the things and sin in the world they miss the best thing they could ever receive, and that is the Son.
+            </p>
+
+            <h3 className="text-2xl font-bold text-green-900 mt-8 mb-4">
+              🎭 STORY 10: THE SON - SEEK FIRST THE KINGDOM
+            </h3>
+
+            <p className="mb-4">
+              A wealthy man and his son loved to collect rare works of art. They had everything in their collection, from Picasso to Raphael. They would often sit together and admire the great works of art. When the Viet Nam conflict broke out, the son went to war. He was very courageous and died in battle while rescuing another soldier. The father was notified and grieved deeply for his only son.
+            </p>
+
+            <p className="mb-4">
+              About a month later, just before Christmas, there was a knock at the door. A young man stood at the door with a large package in his hands. He said, "Sir, you don't know me, but I am the soldier for whom your son gave his life. He saved many lives that day, and he was carrying me to safety when a bullet struck him in the heart and he died instantly. He often talked about you, and your love for art.
+            </p>
+
+            <p className="mb-4">
+              The young man held out his package. "I know this isn't much. I'm not really a great artist, but I think your son would have wanted you to have this." The father opened the package. It was a portrait of his son, painted by the young man. He stared in awe at the way the soldier had captured the personality of his son in the painting. The father was so drawn to the eyes that his own eyes welled up with tears. He thanked the young man and offered to pay him for the picture.
+            </p>
+
+            <p className="mb-4">
+              "Oh, no sir. I could never repay what your son did for me. It's a gift."
+            </p>
+
+            <p className="mb-4">
+              The father hung the portrait over his mantle. Every time visitors came to his home he took them to see the portrait of his son before he showed them any of the other great works he had collected.
+            </p>
+
+            <p className="mb-4">
+              The man died a few months later. There was to be a great auction of his paintings. Many influential people gathered, excited over seeing the great paintings and having an opportunity to purchase one for their collection. On the platform sat the painting of the son.
+            </p>
+
+            <p className="mb-4">
+              The auctioneer pounded his gavel. "We will start the bidding with this picture of the son. Who will bid for this picture?" There was silence. Then a voice in the back of the room shouted, "We want to see the famous paintings! Skip this one!" But the auctioneer persisted. "Will someone bid for this painting? Who will start the bidding? $100, $200?" Another voice shouted angrily, "We didn't come to see this painting! We came to see the Van Gogh's, the Rembrandt's! Get on with the real bids!" But still the auctioneer continued. "The son! The son! Who'll take the son?"
+            </p>
+
+            <p className="mb-4">
+              Finally, a voice came from the very back of the room. It was the longtime gardener of the man and his son. "I'll give $10 for the painting." Being a poor man, it was all he could afford. "We have $10, who will bid $20?" "Give it to him for $10! Let's see the masters!" "$10 is the bid, won't someone bid $20?" The crowd was becoming angry. They didn't want the picture of the son. They wanted the more worthy investments for their collections. The auctioneer pounded the gavel. "Going once, twice, SOLD for $10!"
+            </p>
+
+            <p className="mb-4">
+              A man sitting in the second row shouted, "Now, let's get on with the collection!" The auctioneer laid down his gavel. "I'm sorry, the auction is over." "What about the paintings?" "I am sorry. When I was called to conduct this auction, I was told of a secret stipulation in the will. I was not allowed to reveal that stipulation until this time. Only the painting of the son would be auctioned. Whoever bought that painting would inherit the entire estate, including the paintings. The man who took the son gets everything!"
+            </p>
+
+            <p className="mb-6">
+              God gave His son 2,000 years ago to die on a cruel cross. Much like the auctioneer, His message today is, "The son, the son, who'll take the son?" Because, you see, whoever takes the Son gets everything.
+            </p>
+
+            <div className="bg-green-50 border-l-4 border-green-500 p-5 my-6 rounded">
+              <p className="font-bold text-green-900 mb-3">🖼️ The Art Auction</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A wealthy art collector and his son loved rare artwork. The son died in Vietnam saving another soldier. A month later, a soldier brought a portrait of the son—painted by him. "It's a gift," he said. The father hung it over his mantle, showing it to visitors before his famous collection.
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                When the father died, his art was auctioned. The auctioneer started: "We'll begin with this picture of the son." The crowd protested: "We want the masters! Skip this one!" But he persisted: "The son! Who'll take the son?"
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                Finally, the gardener bid $10 (all he could afford). "SOLD for $10!" The crowd was angry. "Now let's see the real paintings!"
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                The auctioneer revealed: "The auction is over. The will said: whoever bought the painting of the son would inherit the entire estate, including ALL the paintings. The man who took the son gets EVERYTHING!"
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              The following story shows that you cannot do it on your own strength, it's only when you give up and let God take over your life then you will receive His strength to get you through.
+            </p>
+
+            <h3 className="text-2xl font-bold text-orange-900 mt-8 mb-4">
+              🏊 STORY 11: THE DROWNING MAN - LET GO & LET GOD
+            </h3>
+
+            <p className="mb-4">
+              There was a man that was on vacation with his family and he decides to go to a water theme park, the only problem was the man couldn't swim. He stood away from swimming in the deep ends of the pools, but as he was walking in the park he noticed a zipline ride. It was where you would hold on to this handle that was attached to a metal cable that was on a wheel bearing that would zip you across the pool and you would let go where you desired to swim, 11ft, 9ft, 6ft, and 3ft. This man figured this is easy, I'll just zip through the deep water and I'll drop off where the 3ft water is.
+            </p>
+
+            <p className="mb-4">
+              As he grabbed the handle and began to lift off the platform something happened—he slipped and fell in the 11ft area of water! He began to sink down in the water then he began to fight and tried to swim all he could but there was no use he couldn't even get above the water to scream. The man thought within himself and said, "Jesus, I can't. I'm just gonna die." As soon as he stopped trying to swim and gave up and began to sink a life guard jumped in the pool, wrapped his arms around him, and brought him safely to the top. You see the life guard is trained not to try to help someone when they are fighting and nervous, because if they would try to help when a person's like that the person might get paranoid and take the life guard down. The life guard waits until the person stops fighting.
+            </p>
+
+            <p className="mb-6">
+              The point is God wants you to stop trying yourself and understand that He will fight for you because the battles are not yours they're the Lord's! Until you do that you will sink lower and lower in this life but when you give it to Him you will rise above your problems!
+            </p>
+
+            <div className="bg-orange-50 border-l-4 border-orange-500 p-5 my-6 rounded">
+              <p className="font-bold text-orange-900 mb-3">💦 Personal Testimony</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A man at a water park tried a zipline over a pool. He couldn't swim. He slipped and fell into 11ft water! He sank, fighting and trying to swim, but couldn't reach the surface to scream.
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                He thought: "Jesus, I can't. I'm just gonna die." As soon as he stopped fighting and gave up, a lifeguard jumped in, wrapped his arms around him, and brought him safely up!
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                The lifeguard is trained NOT to help when someone is fighting—they wait until the person stops. God wants you to stop trying yourself and understand that He will fight for you because the battles are not yours, they're the Lord's!
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              This is the last story and it represents how we have to align ourselves with the Word of God.
+            </p>
+
+            <h3 className="text-2xl font-bold text-purple-900 mt-8 mb-4">
+              ⚾ STORY 12: THE BASEBALL - ALIGN WITH GOD'S BLESSING
+            </h3>
+
+            <p className="mb-4">
+              There was a minister who received two baseball tickets to see his favorite team as a love offering from one of his congregation members. He and his wife went to the baseball game and as they were walking in the stadium the minister thought within himself, "God, if you allow me to catch a ball I can use it in a sermon as an illustration." After he thought this he got discouraged and said, "I'm not gonna catch a ball." He soon forgot about catching a ball and looked for the seats that were assigned to him. He found the seats, they were great seats, 15th row right on the side of first base and right in back of the players dugout.
+            </p>
+
+            <p className="mb-4">
+              Something happened, though, the minister saw a couple empty seats a few rows up and he figured we can get really close. As the minister and his wife went to the seats that were empty and sat down, about five minutes later the minister's wife said, "I think we should go back to our seats, it will be very embarrassing if we have to move." The minister hesitated then agreed. As soon as they sat in their original seats, not more than five minutes later there was a fly pop-up and it was like the ball was coming straight for the minister out of heaven! He winds up getting the ball he asked God for and went home happy as can be and when Sunday came he ministered about aligning yourself with God's blessing. He explained how he tried to move to another seat that wasn't assigned to him, but when he went to the seat assigned to him the blessing fell and he was aligned to receive it.
+            </p>
+
+            <p className="mb-6">
+              That story demonstrates how we think we know better and we try to move ourselves in places God hasn't assigned us to be but if we look to the Word He has made it clear what He wants from us. If the minister would have stayed were he wasn't assigned he would have missed the blessing, and if we don't align our life to the Word of God we will miss the blessing every time!
+            </p>
+
+            <div className="bg-purple-50 border-l-4 border-purple-500 p-5 my-6 rounded">
+              <p className="font-bold text-purple-900 mb-3">🎟️ Personal Testimony</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                A minister received Cubs tickets. He prayed: "God, if you allow me to catch a ball I can use it in a sermon." He found his assigned seats (15th row, first base). Then he saw better empty seats and moved.
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                His wife said, "We should go back to our seats." He agreed. Five minutes after returning to their ASSIGNED seats, a fly ball came straight for him out of heaven! He caught it!
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                He preached about aligning yourself with God's blessing. If he'd stayed where he wasn't assigned, he'd have missed the blessing. If we don't align our lives to the Word of God, we will miss the blessing every time!
+              </p>
+            </div>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              The last two stories you read were very personal, the reason why is that the man in both of the stories was me! I was at the Chicago Cubs game and caught the ball and I was the person that almost drowned on vacation in Wisconsin Dells.
+            </p>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              However you decide to tell a story just make sure you take time and tell a story, because wherever Jesus went He connected the Word with a story. Hopefully you see the power of a story that brings God glory. To find out how to find more stories go to the resource page in back of this book.
+            </p>
+
+            <p className="mb-6 font-semibold text-gray-800">
+              The Bible talks about a bond servant as being a servant that doesn't need to stay and serve but loves his master and loves the way they are treated by their master; they willingly stay and be willing servants. A lot of the apostles refer to themselves as bond slaves in their opening letters in the Bible.
+            </p>
+
+            <h3 className="text-2xl font-bold text-green-900 mt-8 mb-4">
+              ✊ STORY 13: THE BOND SERVANT - WILLING SERVICE
+            </h3>
+
+            <p className="mb-4 font-semibold text-green-800">
+              Bond Servant.
+            </p>
+
+            <p className="mb-4">
+              A man went down to a slave trade block and noticed an evil hateful looking man bidding on a young black lady, when the kind gentleman saw her fear, he too placed a bid. Soon only these two men were involved in the bidding as the price of the girl rose higher and higher. Finally the evil man bowed out of the bidding when realized that the price of the girl was more than he was willing to pay. When the auctioneer closed the bidding the kind gentleman paid the price for his purchase, was handed the Bill-of-Sale and turned to leave. The young girl started to follow her new master.
+            </p>
+
+            <p className="mb-4">
+              He then turned to her and asked, "Where are you going?" "Why, I'm going with you," she responded; "You bought me and I belong to you." "O! You misunderstood," the man said, "I didn't buy you to make you my slave, I bought you to set you free. You are free." "What does that mean?" she demanded. "It means, you are free." "Does that mean that I can be what I want to be?" "Yes— you can be whatever you want to be." "Does that mean that I can say what I want to say?" "Yes—you can say whatever you want to say." "Does that mean that I can go where I want to go?" "Yes—you can go wherever you want to go." "Then," said the girl, "I'll go with you."
+            </p>
+
+            <p className="mb-6">
+              Who was the man? President Abraham Lincoln, who was assassinated not too long after because he wanted the slaves to be free! This story shows that serving God shouldn't be burdensome but we should be willing and wanting to serve Him because He has paid for our freedom with His life because He is a good Master.
+            </p>
+
+            <div className="bg-green-50 border-l-4 border-green-500 p-5 my-6 rounded">
+              <p className="font-bold text-green-900 mb-3">⛓️ Abraham Lincoln's Purchase</p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                At a slave auction, a kind gentleman outbid an evil man for a young black woman. After purchasing her, he said, "I didn't buy you to make you my slave, I bought you to set you free. You are free."
+              </p>
+              <p className="text-gray-800 mb-2 text-sm leading-relaxed">
+                "Does that mean I can be what I want? Say what I want? Go where I want?" she asked. "Yes, yes, and yes," he replied.
+              </p>
+              <p className="text-gray-800 font-semibold text-sm">
+                "Then," said the girl, "I'll go with you." The man was President Abraham Lincoln, who was later assassinated because he wanted slaves to be free!
+              </p>
+            </div>
+
+            <p className="mb-4 text-gray-800">
+              This story shows that serving God shouldn't be burdensome but we should be willing and wanting to serve Him because He has paid for our freedom with His life because He is a good Master.
+            </p>
+
+            <div className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-6 rounded-lg mt-8 text-center">
+              <p className="text-2xl font-bold mb-3">
+                📖 STORIES THAT BRING GLORY ✨
+              </p>
+              <p className="text-lg">
+                However you decide to tell a story, just make sure you take time and tell a story, because wherever Jesus went He connected the Word with a story.
+              </p>
+              <p className="text-lg mt-2 font-semibold">
+                Everyone always remembers a good story!
+              </p>
+            </div>
+
+            <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 mt-6 rounded">
+              <p className="font-bold text-yellow-900 mb-2">📚 RESOURCE TIP</p>
+              <p className="text-gray-800">
+                To find out how to find more stories, go to the resource page in back of this book.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
