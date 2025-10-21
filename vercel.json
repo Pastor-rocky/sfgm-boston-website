@@ -9,7 +9,7 @@
     },
     {
       "src": "/(.*)",
-      "dest": "/dist/index.js"
+      "dest": "/dist/public/index.html"
     }
   ]
 }
