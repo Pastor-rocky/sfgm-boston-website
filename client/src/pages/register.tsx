@@ -15,6 +15,7 @@ import sfgmLogoBlue from "@/assets/sfgm-logo-new-blue.png";
 
 interface RegisterFormData {
   username: string;
+  email: string;
   password: string;
   confirmPassword: string;
   emailConsent: boolean;
@@ -29,6 +30,7 @@ export default function Register() {
 
   const [formData, setFormData] = useState<RegisterFormData>({
     username: "",
+    email: "",
     password: "",
     confirmPassword: "",
     emailConsent: false
@@ -47,6 +49,16 @@ export default function Register() {
     // Debug logging
 
     // Basic validation
+    if (!formData.email || !formData.email.includes('@')) {
+      toast({
+        title: "Invalid Email",
+        description: "Please enter a valid email address.",
+        variant: "destructive",
+      });
+      setIsLoading(false);
+      return;
+    }
+
     if (formData.password !== formData.confirmPassword) {
       toast({
         title: "Password Mismatch",
@@ -85,6 +97,7 @@ export default function Register() {
         },
         body: JSON.stringify({
           username: formData.username,
+          email: formData.email,
           password: formData.password,
           emailConsent: formData.emailConsent
         }),
@@ -243,6 +256,25 @@ export default function Register() {
                       placeholder="your_username"
                       value={formData.username}
                       onChange={(e) => handleInputChange('username', e.target.value)}
+                      className="h-12 pl-12 border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-xl transition-all duration-300"
+                      required
+                    />
+                  </div>
+                </div>
+
+                {/* Email Field */}
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-gray-700 font-semibold text-sm">
+                    Email Address *
+                  </Label>
+                  <div className="relative">
+                    <i className="fas fa-envelope absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                    <Input
+                      id="email"
+                      type="email"
+                      placeholder="your.email@example.com"
+                      value={formData.email}
+                      onChange={(e) => handleInputChange('email', e.target.value)}
                       className="h-12 pl-12 border-2 border-gray-200 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 rounded-xl transition-all duration-300"
                       required
                     />
