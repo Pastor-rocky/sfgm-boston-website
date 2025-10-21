@@ -118,9 +118,7 @@ export function isDean(user: User): boolean {
          user.is_dean === true ||
          user.username === 'pastorrocky' || 
          user.username === 'pastorrocky-dean' || 
-         user.role === 'dean' ||
-         user.email === 'thebostonchurchthor@icloud.com' ||
-         user.email === 'dean@sfgmboston.com';
+         user.role === 'dean';
 }
 
 /**
