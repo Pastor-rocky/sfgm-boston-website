@@ -1055,7 +1055,7 @@ export default function CourseContentViewer({ courseId }: CourseContentViewerPro
         )}
 
         <TabsContent value="readings" className="space-y-4">
-          {courseId === 3 ? (
+          {courseId === 2 ? (
             <div className="space-y-4">
               {/* Week 1 Required Reading for Don't Be a Jonah */}
               <Card>
@@ -1947,7 +1947,7 @@ export default function CourseContentViewer({ courseId }: CourseContentViewerPro
                 </CardContent>
               </Card>
             </div>
-          ) : courseId === 2 ? (
+          ) : courseId === 4 ? (
             <div className="space-y-4">
               {/* Week 1 Required Reading for Firestarter */}
               <Card>
@@ -2787,7 +2787,7 @@ export default function CourseContentViewer({ courseId }: CourseContentViewerPro
                 </CardContent>
               </Card>
             </div>
-          ) : courseId === 4 ? (
+          ) : courseId === 1 ? (
             <div className="space-y-4">
               {/* Week 1 Required Reading for G.R.O.W */}
               <Card>
@@ -2873,7 +2873,7 @@ export default function CourseContentViewer({ courseId }: CourseContentViewerPro
                 </CardContent>
               </Card>
             </div>
-          ) : courseId === 6 ? (
+          ) : courseId === 7 ? (
             <div className="space-y-4">
               {/* Week 1 Required Reading for Deacon Course */}
               <Card>
