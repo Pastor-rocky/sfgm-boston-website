@@ -1195,12 +1195,12 @@ After completing this chapter, proceed to the next module or assessment as direc
   }
   
   async getCourseReadings(courseId: number): Promise<CourseReading[]> {
-    // Special handling for Acts in Action course (courseId = 4) - Bible readings only
-    if (courseId === 4) {
+    // Special handling for Acts in Action course (courseId = 3) - Bible readings only
+    if (courseId === 3) {
       const bibleReadings: CourseReading[] = [
         {
           id: 1001,
-          courseId: 4,
+          courseId: 3,
           title: "Week 1: Acts Chapters 1-2",
           description: "Read the beginning of the church with the ascension of Jesus and Pentecost",
           readingType: 'bible_chapter' as const,
@@ -1223,7 +1223,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1002,
-          courseId: 4,
+          courseId: 3,
           title: "Week 2: Acts Chapters 3-5",
           description: "The early church's growth, miracles, and persecution",
           readingType: 'bible_chapter' as const,
@@ -1246,7 +1246,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1003,
-          courseId: 4,
+          courseId: 3,
           title: "Week 3: Acts Chapters 6-8",
           description: "Stephen's martyrdom and the spread of the Gospel",
           readingType: 'bible_chapter' as const,
@@ -1269,7 +1269,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1004,
-          courseId: 4,
+          courseId: 3,
           title: "Week 4: Acts Chapters 11 & 12",
           description: "Paul's conversion and Peter's vision",
           readingType: 'bible_chapter' as const,
@@ -1292,7 +1292,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1005,
-          courseId: 4,
+          courseId: 3,
           title: "Week 5: Acts Chapters 12-14",
           description: "Persecution, deliverance, and Paul's first missionary journey",
           readingType: 'bible_chapter' as const,
@@ -1315,7 +1315,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1006,
-          courseId: 4,
+          courseId: 3,
           title: "Week 6: Acts Chapters 15-17",
           description: "The Jerusalem Council and Paul's second missionary journey",
           readingType: 'bible_chapter' as const,
@@ -1338,7 +1338,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1007,
-          courseId: 4,
+          courseId: 3,
           title: "Week 7: Acts Chapters 18-20",
           description: "Paul's ministry in Ephesus and farewell to the elders",
           readingType: 'bible_chapter' as const,
@@ -1361,7 +1361,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1008,
-          courseId: 4,
+          courseId: 3,
           title: "Week 8: Acts Chapters 21-23",
           description: "Paul's arrest in Jerusalem and defense before the council",
           readingType: 'bible_chapter' as const,
@@ -1384,7 +1384,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1009,
-          courseId: 4,
+          courseId: 3,
           title: "Week 9: Acts Chapters 24-26",
           description: "Paul's trials before Felix, Festus, and Agrippa",
           readingType: 'bible_chapter' as const,
@@ -1407,7 +1407,7 @@ After completing this chapter, proceed to the next module or assessment as direc
         } as any,
         {
           id: 1010,
-          courseId: 4,
+          courseId: 3,
           title: "Week 10: Acts Chapters 27-28",
           description: "Paul's journey to Rome and ministry under house arrest",
           readingType: 'bible_chapter' as const,
