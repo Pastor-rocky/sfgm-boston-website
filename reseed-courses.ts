@@ -16,6 +16,11 @@ async function reseedCourses() {
     await db.delete(courses);
     console.log("✅ All courses deleted");
 
+    console.log("🔄 Resetting course sequence to start at ID 1...");
+    // Reset the auto-increment sequence to start at 1
+    await db.execute(sql`ALTER SEQUENCE courses_id_seq RESTART WITH 1`);
+    console.log("✅ Course ID sequence reset");
+
     console.log("\n🌱 Seeding courses in correct order...");
 
     const coursesToInsert = [
