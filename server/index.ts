@@ -1,8 +1,11 @@
 // Load environment variables FIRST before any other imports
 import * as dotenv from 'dotenv';
 import * as path from 'path';
+import { fileURLToPath } from 'url';
 
-dotenv.config({ path: path.resolve(process.cwd(), '.env') });
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 
 import express, { type Request, Response, NextFunction } from "express";
 import { setupRoutes } from "./routes";
@@ -65,7 +68,7 @@ app.use((req, res, next) => {
 const port = Number(process.env.PORT) || 55555;
     server.listen({
       port,
-      host: "0.0.0.0",
+      host: "localhost",
     }, () => {
       log(`serving on port ${port}`);
     });

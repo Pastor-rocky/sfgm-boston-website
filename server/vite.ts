@@ -43,14 +43,15 @@ export async function setupVite(app: Express, server: Server) {
   app.use(vite.middlewares);
   
   // Serve static files from public directory
-  app.use(express.static(path.resolve(process.cwd(), "public")));
+  app.use(express.static(path.resolve(import.meta.dirname, "..", "public")));
   
   app.use("*", async (req, res, next) => {
     const url = req.originalUrl;
 
     try {
       const clientTemplate = path.resolve(
-        process.cwd(),
+        import.meta.dirname,
+        "..",
         "client",
         "index.html",
       );
@@ -71,8 +72,7 @@ export async function setupVite(app: Express, server: Server) {
 }
 
 export function serveStatic(app: Express) {
-  // Use process.cwd() instead of import.meta.dirname for production builds
-  const distPath = path.resolve(process.cwd(), "dist", "public");
+  const distPath = path.resolve(import.meta.dirname, "public");
 
   if (!fs.existsSync(distPath)) {
     throw new Error(

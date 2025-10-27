@@ -1978,7 +1978,7 @@ export function setupRoutes(app: Express): Server {
       }
 
       // Check if database is available
-      if (!db) {
+      if (!process.env.DATABASE_URL) {
         console.log('Database not configured - DATABASE_URL missing');
         return res.status(500).json({ message: "Database not configured. Please set DATABASE_URL environment variable." });
       }

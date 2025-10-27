@@ -16,6 +16,3 @@ export interface CourseEnrollment {
   isCompleted: boolean;
 }
 
-
-
-
