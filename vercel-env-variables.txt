@@ -1,0 +1,22 @@
+# Copy and paste these into Vercel Environment Variables
+
+# Database (REQUIRED)
+DATABASE_URL=postgresql://neondb_owner:npg_d6c1xDSuXGAB@ep-autumn-sound-adtj3nff-pooler.c-2.us-east-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+
+# Node Environment (REQUIRED)
+NODE_ENV=production
+PORT=3000
+
+# Email Configuration (REQUIRED)
+EMAILJS_SERVICE_ID=service_bhhbgpr
+EMAILJS_TEMPLATE_ID=template_7aa3jen
+EMAILJS_PUBLIC_KEY=UPTEDM8MNxgzaRzV3
+
+# Security Secrets (REQUIRED - Generate random strings)
+JWT_SECRET=sfgm-boston-jwt-secret-2025-change-this
+SESSION_SECRET=sfgm-boston-session-secret-2025-change-this
+
+# Domain (UPDATE AFTER DEPLOYMENT)
+DOMAIN_URL=https://sfgm-boston.vercel.app
+CORS_ORIGIN=https://sfgm-boston.vercel.app
+ADMIN_EMAIL=pastor_rocky@sfgmboston.com
