@@ -1,0 +1,63 @@
+d634d2f|2025-10-27|Clean up: Remove 35 obsolete documentation files
+1c5cb46|2025-10-27|Add step-by-step guide to access Railway shell
+a396e8c|2025-10-27|Add Railway deployment commands guide
+93d33f3|2025-10-27|Add quick start guide
+359efb8|2025-10-27|Add comprehensive deployment status and course quiz documentation
+ae3a6c0|2025-10-27|Extract and seed Acts in Action quiz content from PDFs
+fa2e674|2025-10-27|Add quiz seeding scripts for all remaining courses
+8da6328|2025-10-27|Add Fire Starter quiz seeding script and update instructions
+58bafbd|2025-10-27|Add seed instructions documentation
+a7d5da4|2025-10-27|Add seed-all-videos script and npm script for seeding videos
+04bd6b0|2025-10-27|Fix static file serving to use dist/public directory
+d62c1d4|2025-10-27|Fix import.meta.dirname in vite.config.ts
+3dd4c85|2025-10-27|Fix tsx loader flag for Node.js v18+ compatibility
+bf47077|2025-10-27|Switch from esbuild bundling to tsx for direct TypeScript execution
+0aa25ba|2025-10-27|Add more detailed logging to server initialization
+26253bc|2025-10-27|Add debugging for __dirname resolution
+679cda3|2025-10-27|Fix path resolution issues for production build - use __dirname instead of import.meta.dirname
+78171c1|2025-10-27|Add all course content: videos, quizzes, textbooks, and audio files for all 6 courses
+979774d|2025-10-27|Fix Acts in Action course - correct courseId from 3 to 1
+dc88a92|2025-10-27|Revert course-content-viewer.tsx to original correct mappings
+8671325|2025-10-27|Fix course ID sequence - reset to start at 1
+b47c309|2025-10-27|Fix course order - reseed database with correct course IDs matching frontend
+5709c6e|2025-10-27|Fix course content mapping - correct course IDs for all courses
+16c957b|2025-10-27|Fix course content mapping - correct Acts in Action readings
+ff66b4c|2025-10-27|Add Railway configuration
+e1faaa5|2025-10-26|Remove Vercel files, switch to Railway deployment
+1dcb364|2025-10-26|Fix API routes for Vercel deployment - add catch-all handler
+0107bc3|2025-10-26|Remove compiled api/index.js file to fix deployment conflict
+43a3243|2025-10-26|Trigger Vercel redeploy
+c5381c7|2025-10-26|Fix Vercel deployment configuration
+4e0aa04|2025-10-26|Add Vercel deployment configuration and documentation
+ae377c9|2025-10-21|Fix import.meta.dirname in vite.config.ts for production builds
+21c2591|2025-10-21|Fix path resolution issues in production build
+a8d9bc8|2025-10-21|Remove healthcheck from Railway config to bypass healthcheck issues
+368d3b1|2025-10-21|Update Railway healthcheck to use /api/health endpoint
+73d72dc|2025-10-21|Fix server binding to 0.0.0.0 for Railway deployment
+091e1df|2025-10-21|Add Railway configuration files
+556d875|2025-10-21|Add simple auth API function
+6ef7027|2025-10-21|Fix static assets routing
+50003fa|2025-10-21|Fix API routing for serverless functions
+1cf9fb5|2025-10-21|Set up Neon database and create Pastor Rocky user
+a86811d|2025-10-21|Simplify Vercel config to use defaults
+225c75b|2025-10-21|Add proper Vercel serverless function
+fc0e479|2025-10-21|Fix API routing to use individual API files
+f8b8941|2025-10-21|Add simple API test endpoint
+5d9d641|2025-10-21|Add database test endpoint
+760ac89|2025-10-21|Create Pastor Rocky user and simplify dean permissions
+409c930|2025-10-21|Trigger redeploy with DATABASE_URL
+89c2ae8|2025-10-21|Trigger Vercel redeploy with database tables
+f8b9042|2025-10-21|Add email field to registration form
+435af3b|2025-10-21|Fix database connection handling for production deployment
+31d98e9|2025-10-21|Move server to api directory for Vercel compatibility
+06db398|2025-10-21|Fix Vercel runtime version format
+712ed16|2025-10-21|Fix API routing with proper function configuration
+c331004|2025-10-21|Add static assets route to fix white page
+ffa3239|2025-10-21|Simplify Vercel config to fix build error
+8a5cf6d|2025-10-21|Use proper Vercel builds configuration
+2f3263a|2025-10-21|Fix Vercel routes to serve HTML instead of JS bundle
+60ddcae|2025-10-21|Simplify Vercel config to fix runtime error
+ddd1d26|2025-10-21|Fix static file serving path and Vercel config
+c0eb0fe|2025-10-21|Fix Vercel config to properly serve built files
+ed531c4|2025-10-21|Fix Vercel configuration for proper deployment
+69efdd8|2025-10-21|Initial commit - SFGM Boston Ministry Website
