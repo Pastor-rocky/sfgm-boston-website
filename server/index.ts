@@ -63,9 +63,9 @@ app.use((req, res, next) => {
       serveStatic(app);
     }
 
-// Serve the app on a configurable port via env (default 55555)
+// Serve the app on a configurable port via env (default 56000)
 // this serves both the API and the client.
-const port = Number(process.env.PORT) || 55555;
+const port = Number(process.env.PORT) || 56000;
     server.listen({
       port,
       host: "localhost",
